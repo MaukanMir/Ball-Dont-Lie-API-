@@ -6,7 +6,8 @@ import pandas as pd
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from bs4 import BeautifulSoup
-from packages.utils import get_advanced_stats, advanced_stats_headers, convert_string_to_ints 
+from packages.utils import get_advanced_stats, advanced_stats_headers, convert_string_to_ints
+from tests.test_main import test_dataframe_operations
 
 
 current_dir = os.path.dirname(os.path.abspath('/Users/maukanmir/Documents/Machine-Learning/Web-Scraping-Code/Ball-Dont-Lie-API/main.py'))
@@ -55,3 +56,6 @@ except Exception as e:
     
 
 all_data.to_csv("advanced_stats.csv", index=False)
+
+# Run Tests for dataframe operations
+test_dataframe_operations(all_data)
