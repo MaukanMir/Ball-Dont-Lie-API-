@@ -53,7 +53,7 @@ try:
     print("Data successfully written to the database.")
 except Exception as e:
     print(f"Database operation failed. Error: {e}")
-    
+
 
 all_data.to_csv("advanced_stats.csv", index=False)
 
