@@ -1,0 +1,17 @@
+# Testing Framework
+pytest==7.4.0          # Popular testing library for unit tests
+
+# Code Coverage (Optional)
+pytest-cov==4.1.0      # Adds coverage reporting for your tests
+
+# Mocking (Optional)
+pytest-mock==3.10.0    # For mocking objects in tests
+
+# Linting and Formatting (Optional)
+flake8==6.1.0          # For checking Python code style
+black==23.9.1          # Automatic code formatter
+
+# Application Dependencies (Replace with your project-specific ones)
+requests==2.31.0       # Example: HTTP library for making API calls
+numpy==1.26.0          # Example: Scientific computing library
+pandas==1.4.0          # Example: Data manipulation library
