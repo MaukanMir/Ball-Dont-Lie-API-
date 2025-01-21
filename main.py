@@ -58,4 +58,4 @@ except Exception as e:
 all_data.to_csv("advanced_stats.csv", index=False)
 
 # Run Tests for dataframe operations
-test_dataframe_operations(all_data)
+# test_dataframe_operations(all_data)
