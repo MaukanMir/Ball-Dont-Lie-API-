@@ -1,6 +1,17 @@
 # Description: This file contains utility functions that are used to scrape data from basketball-reference.com
 import pandas as pd
 
+# Universal Functions
+
+def change_to_numeric(df):
+    for col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    return df
+
+def set_season(df, year):
+    df["season"] = year
+    return df
+
 def get_advanced_stats(soup):
     table = soup.find("table", {"id": "advanced-team"})
     rows = []
@@ -56,7 +67,7 @@ def convert_string_to_ints(df, year):
         elif col == "Team":
             df[col] = df[col].str.replace("*", "")
     
-    df["season"] = year
+    df = set_season(df, year)
     return df
 
 def get_total_stats(soup, year):
@@ -71,9 +82,7 @@ def get_total_stats(soup, year):
     df = pd.DataFrame(rows, columns=headers)
     df["Team"] = df["Team"].str.replace("*", "")
 
-    for col in df.columns:
-        df[col] = pd.to_numeric(df[col], errors="ignore")
-
-    df["Season"] = year
+    df = change_to_numeric(df)
+    df = set_season(df, year)
 
     return df
