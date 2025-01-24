@@ -1,5 +1,5 @@
 # Description: This file contains utility functions that are used to scrape data from basketball-reference.com
-
+import pandas as pd
 
 def get_advanced_stats(soup):
     table = soup.find("table", {"id": "advanced-team"})
