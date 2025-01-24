@@ -58,3 +58,22 @@ def convert_string_to_ints(df, year):
     
     df["season"] = year
     return df
+
+def get_total_stats(soup, year):
+    table = soup.find("table", {"id": "totals-team"})
+    headers = [header.text for header in table.find("thead").find_all("th")]
+
+    rows = []
+    for row in table.find("tbody").find_all("tr"):
+        cells = row.find_all(["th", "td"])
+        rows.append([cell.text.strip() for cell in cells])
+
+    df = pd.DataFrame(rows, columns=headers)
+    df["Team"] = df["Team"].str.replace("*", "")
+
+    for col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors="ignore")
+
+    df["Season"] = year
+
+    return df
