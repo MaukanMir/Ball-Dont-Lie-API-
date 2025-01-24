@@ -12,18 +12,6 @@ def set_season(df, year):
     df["season"] = year
     return df
 
-def get_advanced_stats(soup):
-    table = soup.find("table", {"id": "advanced-team"})
-    rows = []
-    
-    for row in table.find("tbody").find_all("tr"):
-        cells = row.find_all(["th", "td"])
-        formatted_cell = [cell.get_text(strip=True) for cell in cells]
-        for clean_cell in formatted_cell:
-            if len(clean_cell) == 0:
-                formatted_cell.remove(clean_cell)
-        rows.append(formatted_cell)
-    return rows
 
 def advanced_stats_headers():
     ## Advanced Stats Exraction
@@ -56,19 +44,24 @@ def advanced_stats_headers():
             adjusted_headers.append(header)
     return adjusted_headers
 
-def convert_string_to_ints(df, year):
+
+def get_advanced_stats(soup, year):
+    table = soup.find("table", {"id": "advanced-team"})
+    rows = []
     
-    for col in df.columns:
-        if col != "Team" and col != "Arena":
-            try:
-                df[col] = df[col].str.replace(",", "").astype(float)
-            except:
-                continue
-        elif col == "Team":
-            df[col] = df[col].str.replace("*", "")
-    
+    for row in table.find("tbody").find_all("tr"):
+        cells = row.find_all(["th", "td"])
+        formatted_cell = [cell.get_text(strip=True) for cell in cells]
+        for clean_cell in formatted_cell:
+            if len(clean_cell) == 0:
+                formatted_cell.remove(clean_cell)
+        rows.append(formatted_cell)
+    adjusted_headers = advanced_stats_headers()
+    df = pd.DataFrame(rows, columns=adjusted_headers)
+    df = change_to_numeric(df)
     df = set_season(df, year)
     return df
+
 
 def get_total_stats(soup, year):
     table = soup.find("table", {"id": "totals-team"})
@@ -85,4 +78,26 @@ def get_total_stats(soup, year):
     df = change_to_numeric(df)
     df = set_season(df, year)
 
+    return df
+
+def per_game_stats(soup, year):
+    table = soup.find("table", {"id": "per_game-team"})
+
+    # Extract the headers
+    headers = [th.text.strip() for th in table.find("thead").find_all("th")]
+
+    # Extract the rows from the tbody
+    rows = table.find("tbody").find_all("tr")
+
+    # Extract the data for each row
+    data = []
+    for row in rows:
+        cells = row.find_all("td")
+        row_data = [cell.text.strip() for cell in cells]
+        data.append(row_data)
+
+    # Create a DataFrame from the parsed data
+    df = pd.DataFrame(data, columns=headers[1:])
+    df = change_to_numeric(df)
+    df = set_season(df, year)
     return df
