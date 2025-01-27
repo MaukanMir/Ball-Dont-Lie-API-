@@ -38,7 +38,7 @@ for year in years:
   soup = BeautifulSoup(response.text, "html.parser")
   try:
     year = int(year)
-    rows = get_advanced_stats(soup)
+    rows = get_advanced_stats(soup, year)
     adjusted_headers = advanced_stats_headers()
     df = pd.DataFrame(rows, columns=adjusted_headers)
     df = convert_string_to_ints(df, year)
