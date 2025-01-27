@@ -57,5 +57,5 @@ except Exception as e:
 
 all_data.to_csv("advanced_stats.csv", index=False)
 
-# Run Tests for dataframe operations
+# Run Tests for dataframe operations once code is deployed
 # test_dataframe_operations(all_data)
