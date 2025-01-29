@@ -82,21 +82,16 @@ def get_total_stats(soup, year):
 
 def per_game_stats(soup, year):
     table = soup.find("table", {"id": "per_game-team"})
-
-    # Extract the headers
     headers = [th.text.strip() for th in table.find("thead").find_all("th")]
 
-    # Extract the rows from the tbody
     rows = table.find("tbody").find_all("tr")
 
-    # Extract the data for each row
     data = []
     for row in rows:
         cells = row.find_all("td")
         row_data = [cell.text.strip() for cell in cells]
         data.append(row_data)
 
-    # Create a DataFrame from the parsed data
     df = pd.DataFrame(data, columns=headers[1:])
     df = change_to_numeric(df)
     df = set_season(df, year)
