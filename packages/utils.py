@@ -5,7 +5,7 @@ import pandas as pd
 
 def change_to_numeric(df):
     for col in df.columns:
-        df[col] = pd.to_numeric(df[col], errors="coerce")
+        df[col] = df[col].apply(lambda x: pd.to_numeric(x, errors="coerce") if not isinstance(x, str) else x)
     return df
 
 def set_season(df, year):
